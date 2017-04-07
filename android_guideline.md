@@ -66,13 +66,11 @@ Resource files in the values folder should be __plural__, e.g. `strings.xml`, `s
 
 # 2. Code guidelines
 
-## 2.1 Java guidelines
-
-### 2.1.1 Google rules
+## 2.1 Java rules
 
 You can found rules for Java code from Google [here](https://source.android.com/source/code-style). Here's a resume.
 
-#### 2.1.1.1 Don't Ignore Exceptions
+### 2.1.1 Don't Ignore Exceptions
 
 It can be tempting to write code that completely ignores an exception, such as:
 
@@ -86,7 +84,7 @@ void setServerPort(String value) {
 
 Do not do this. While you may think your code will never encounter this error condition or that it is not important to handle it, ignoring exceptions as above creates mines in your code for someone else to trigger some day. You must handle every Exception in your code in a principled way; the specific handling varies depending on the case.
 
-#### 2.1.1.2 Don't Catch Generic Exception
+### 2.1.2 Don't Catch Generic Exception
 
 It can also be tempting to be lazy when catching exceptions and do something like this:
 
@@ -103,15 +101,15 @@ try {
 
 Do not do this. In almost all cases it is inappropriate to catch generic Exception or Throwable (preferably not Throwable because it includes Error exceptions). It is very dangerous because it means that Exceptions you never expected (including RuntimeExceptions like ClassCastException) get caught in application-level error handling.
 
-#### 2.1.1.3 Don't Use Finalizers
+### 2.1.3 Don't Use Finalizers
 
 Finalizers are a way to have a chunk of code executed when an object is garbage collected. While they can be handy for doing cleanup (particularly of external resources), there are no guarantees as to when a finalizer will be called (or even that it will be called at all).
 
-#### 2.1.1.4 Fully Qualify Imports
+### 2.1.4 Fully Qualify Imports
 
 Do not use `import foo.*;`. Use `import foo.Bar;`.
 
-#### 2.1.1.5 Use Javadoc Standard Comments
+### 2.1.5 Use Javadoc Standard Comments
 
 Every file should have a copyright statement at the top, followed by package and import statements (each block separated by a blank line) and finally the class or interface declaration. In the Javadoc comments, describe what the class or interface does.
 
@@ -151,15 +149,15 @@ public class Foo {
 
 Every class and nontrivial public method you write must contain a Javadoc comment with at least one sentence describing what the class or method does. This sentence should start with a third person descriptive verb.
 
-#### 2.1.1.6 Write Short Methods
+### 2.1.6 Write Short Methods
 
 When feasible, keep methods small and focused. We recognize that long methods are sometimes appropriate, so no hard limit is placed on method length.
 
-#### 2.1.1.7 Define Fields in Standard Places
+### 2.1.7 Define Fields in Standard Places
 
 Define fields either at the top of the file or immediately before the methods that use them.
 
-#### 2.1.1.8 Limit Variable Scope
+### 2.1.8 Limit Variable Scope
 
 Keep the scope of local variables to a minimum. By doing so, you increase the readability and maintainability of your code and reduce the likelihood of error. Each variable should be declared in the innermost block that encloses all uses of the variable.
 
@@ -186,7 +184,7 @@ Set s = createSet(cl);
 s.addAll(Arrays.asList(args));
 ```
 
-#### 2.1.1.9 Order Import Statements
+### 2.1.9 Order Import Statements
 
 The ordering of import statements is:
 
@@ -199,20 +197,20 @@ To exactly match the IDE settings, the imports should be:
 * Alphabetical within each grouping, with capital letters before lower case letters (e.g. Z before a).
 * Separated by a blank line between each major grouping (android, com, junit, net, org, java, javax).
 
-#### 2.1.1.10 Use Spaces for Indentation
+### 2.1.10 Use Spaces for Indentation
 
 We use four (4) space indents for blocks and never tabs. When in doubt, be consistent with the surrounding code.
 
 We use eight (8) space indents for line wraps, including function calls and assignments.
 
-#### 2.1.1.11 Follow Field Naming Conventions
+### 2.1.11 Follow Field Naming Conventions
 
 * Non-public, non-static field names start with m.
 * Static field names start with s.
 * Other fields start with a lower case letter.
 * Public static final fields (constants) are ALL_CAPS_WITH_UNDERSCORES.
 
-#### 2.1.1.12 Use Standard Brace Style
+### 2.1.12 Use Standard Brace Style
 
 Braces do not go on their own line; they go on the same line as the code before them.
 
@@ -237,14 +235,14 @@ if (condition)
     body();  // bad!
 ```
 
-#### 2.1.1.13 Limit Line Length
+### 2.1.13 Limit Line Length
 
 Each line of text in your code should be at most 100 characters long. While much discussion has surrounded this rule, the decision remains that 100 characters is the maximum with the following exceptions:
 
 * URL and example command with more than 100 caracters
 * Import statements
 
-#### 2.1.1.14 Use Standard Java Annotations
+### 2.1.14 Use Standard Java Annotations
 
 Annotations should precede other modifiers for the same language element. Simple marker annotations (e.g. @Override) can be listed on the same line with the language element. If there are multiple annotations, or parameterized annotations, they should each be listed one-per-line in alphabetical order.
 
@@ -264,7 +262,7 @@ Android standard practices for the three predefined annotations in Java are:
    
    When a @SuppressWarnings annotation is required, the code should be refactored to isolate the software elements where the annotation applies.
 
-#### 2.1.1.14 Treat Acronyms as Words
+### 2.1.14 Treat Acronyms as Words
 
 Treat acronyms and abbreviations as words in naming variables, methods, and classes to make names more readable:
 
@@ -274,7 +272,7 @@ Treat acronyms and abbreviations as words in naming variables, methods, and clas
 |getCustomerId    |getCustomerID    |
 |class Html       |class HTML       |
 
-#### 2.1.1.15 Use TODO Comments
+### 2.1.15 Use TODO Comments
 
 Use TODO comments for code that is temporary, a short-term solution, or good-enough but not perfect. TODOs should include the string TODO in all caps, followed by a colon:
 
@@ -282,11 +280,11 @@ Use TODO comments for code that is temporary, a short-term solution, or good-eno
 // TODO: Remove this code after the UrlTable2 has been checked in.
 ```
 
-#### 2.1.1.16 Log Sparingly
+### 2.1.16 Log Sparingly
 
 While logging is necessary, it has a significantly negative impact on performance and quickly loses its usefulness if not kept reasonably terse.
 
-#### 2.1.1.17 Be Consistent
+### 2.1.17 Be Consistent
 
 Our parting thought: BE CONSISTENT. If you're editing code, take a few minutes to look at the surrounding code and determine its style. If that code uses spaces around the if clauses, you should too. If the code comments have little boxes of stars around them, make your comments have little boxes of stars around them too.
 
