@@ -535,7 +535,7 @@ Unless the rest of resources, style names are written in __UpperCamelCase__.
 
 As a general rule you should try to group similar attributes together. A good way of ordering the most common attributes is:
 
-1. xmlns tags
+1. xmlns attributes
 2. View Id
 3. Layout width and layout height
 4. Style
@@ -573,7 +573,28 @@ For all values that can be put in a value file, it should be done. For example:
 <string name="next">Next</string>
 ```
 
-### 2.4 Unit tests guidelines
+### 2.3.5 `tools` attibutes
+
+For every layout, if applicable, you should add `tools` attributes for a better visualization and understanding of the layout. For example :
+
+```xml
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+    
+    <TextView android:id="@+id/tv_participant_name"
+    	android:layout_width="match_parent"
+	android:layout_height="wrap_content"
+	tools:text="Richard" />
+    
+</LinearLayout>
+```
+
+__IMPORTANT__: `tools` attibutes values should __not be created__ on values files __if only__ for `tools` attributes. 
+
+## 2.4 Unit tests guidelines
 
 Test classes should match the name of the class the tests are targeting, followed by `Test`. For example, if we create a test class that contains tests for the `DatabaseHelper`, we should name it `DatabaseHelperTest`.
 
