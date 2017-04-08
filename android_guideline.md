@@ -288,3 +288,300 @@ While logging is necessary, it has a significantly negative impact on performanc
 
 Our parting thought: BE CONSISTENT. If you're editing code, take a few minutes to look at the surrounding code and determine its style. If that code uses spaces around the if clauses, you should too. If the code comments have little boxes of stars around them, make your comments have little boxes of stars around them too.
 
+## 2.2 Java guidelines
+
+### 2.2.1 Class member ordering
+
+There is no single correct solution for this but using a logical and consistent order will improve code learnability and readability. It is recommendable to use the following order:
+
+1. Constants
+2. Fields
+3. Constructors
+4. Override methods and callbacks (public or private)
+5. Public methods
+6. Private methods
+7. Inner classes or interfaces
+
+If your class is extending an __Android component__ such as an Activity or a Fragment, it is a good practice to order the override methods so that they __match the component's lifecycle__. For example, if you have an Activity that implements `onCreate()`, `onDestroy()`, `onPause()` and `onResume()`, then the correct order is:
+
+```java
+public class MainActivity extends Activity {
+
+	//Order matches Activity lifecycle
+    @Override
+    public void onCreate() {}
+
+    @Override
+    public void onResume() {}
+
+    @Override
+    public void onPause() {}
+
+    @Override
+    public void onDestroy() {}
+
+}
+```
+
+### 2.2.2 Parameter ordering in methods
+
+When programming for Android, it is quite common to define methods that take a `Context`. If you are writing a method like this, then the __Context__ must be the __first__ parameter.
+
+The opposite case are __callback__ interfaces that should always be the __last__ parameter.
+
+### 2.2.3 String constants, naming, and values
+
+Many elements of the Android SDK such as `SharedPreferences`, `Bundle`, or `Intent` use a key-value pair approach so it's very likely that even for a small app you end up having to write a lot of String constants.
+
+When using one of these components, you __must__ define the keys as a `static final` fields and they should be prefixed as indicated below.
+
+| Element            | Field Name Prefix |
+| -----------------  | ----------------- |
+| SharedPreferences  | `PREF_`             |
+| Bundle             | `BUNDLE_`           |
+| Fragment Arguments | `ARGUMENT_`         |
+| Intent Extra       | `EXTRA_`            |
+| Intent Action      | `ACTION_`           |
+
+Note that the arguments of a Fragment - `Fragment.getArguments()` - are also a Bundle. However, because this is a quite common use of Bundles, we define a different prefix for them.
+
+Example:
+
+```java
+public static final String BUNDLE_NAME = "BUNDLE_NAME";
+private static final String ARGUMENT_USER = "ARGUMENT_USER";
+```
+
+### 2.2.4 Activities and Fragments
+
+For activities and fragments, a `public static` method that facilitates the creation of the relevant `Intent` or `Fragment` should be created.
+
+For activites, create a `getStartIntent()` method:
+
+```java
+public static Intent getStartIntent(Context context, User user) {
+	Intent intent = new Intent(context, ThisActivity.class);
+	intent.putParcelableExtra(EXTRA_USER, user);
+	return intent;
+}
+```
+
+For fragments, a variable `public static final String TAG` should be created and also the creation of a `newInstance()` method:
+
+```java
+public static final String TAG = UserFragment.class.getSimpleName();
+
+public static UserFragment newInstance(User user) {
+	UserFragment fragment = new UserFragment();
+	Bundle args = new Bundle();
+	args.putParcelable(ARGUMENT_USER, user);
+	fragment.setArguments(args);
+	return fragment;
+}
+```
+
+__IMPORTANT__: These methods should go at the top of the class before `onCreate()`. 
+
+### 2.2.5 Line-wrapping strategies
+
+In harmony with the 2.1.13 (Limit Line Length), here's strategies for line-wrapping.
+
+There isn't an exact formula that explains how to line-wrap and quite often different solutions are valid. However there are a few rules that can be applied to common cases.
+
+__Break at operators__
+
+When the line is broken at an operator, the break comes __before__ the operator. For example:
+
+```java
+int longName = anotherVeryLongVariable + anEvenLongerOne - thisRidiculousLongOne
+        + theFinalOne;
+```
+
+__Assignment Operator Exception__
+
+An exception to the `break at operators` rule is the assignment operator `=`, where the line break should happen __after__ the operator.
+
+```java
+int longName =
+        anotherVeryLongVariable + anEvenLongerOne - thisRidiculousLongOne + theFinalOne;
+```
+
+__Method chain case__
+
+When multiple methods are chained in the same line - for example when using Builders - every call to a method should go in its own line, breaking the line before the `.`
+
+```java
+Picasso.with(context).load("http://ribot.co.uk/images/sexyjoe.jpg").into(imageView);
+```
+
+```java
+Picasso.with(context)
+        .load("http://ribot.co.uk/images/sexyjoe.jpg")
+        .into(imageView);
+```
+
+__Long parameters case__
+
+When a method has many parameters or its parameters are very long, we should break the line after every comma `,`
+
+```java
+loadPicture(context, "http://ribot.co.uk/images/sexyjoe.jpg", mImageViewProfilePicture, clickListener, "Title of the picture");
+```
+
+```java
+loadPicture(context,
+        "http://ribot.co.uk/images/sexyjoe.jpg",
+        mImageViewProfilePicture,
+        clickListener,
+        "Title of the picture");
+```
+
+### 2.2.6 Widgets variables naming
+
+For widgets variable, a good practice is to name the variable with the abbreviation of the widget. Examples:
+
+| Widget            | Prefix            | Example           |
+|-------------------|-------------------|-------------------|
+| `TextView`        | `tv`              | `tvName`          |
+| `ImageView`       | `iv`              | `ivProfile`       |
+| `Button`          | `bt`              | `btNext`          |
+| `ListView`        | `lv`              | `lvParticipants`  |
+| `LinearLayout`    | `ll`              | `llBottomButtons` |
+
+__Exception__: There is an exception for widgets that have the same effect than another more common widget. For example, `ImageButton` has the same effect that a `Button` so it's prefix is `bt`.
+
+## 2.3 XML guidelines
+
+### 2.3.1 Use self closing tags
+
+When an XML element doesn't have any contents, you __must__ use self closing tags.
+
+This is good:
+
+```xml
+<TextView
+	android:id="@+id/tv_profile"
+	android:layout_width="wrap_content"
+	android:layout_height="wrap_content" />
+```
+
+This is __bad__ :
+
+```xml
+<!-- Don\'t do this! -->
+<TextView
+    android:id="@+id/tv_profile"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content" >
+</TextView>
+```
+
+### 2.3.2 Resources naming
+
+Resource IDs and names are written in lower __snake_case__.
+
+#### 2.3.2.1 ID naming
+
+IDs should be prefixed with an abbreviation of the element. For example:
+
+| Element            | Prefix            |
+| -----------------  | ----------------- |
+| `TextView`         | `tv_`             |
+| `ImageView`        | `iv_`             |
+| `Button`           | `bt_`             |
+| `ListView`         | `lv_`             |
+| `LinearLayout`     | `ll_`             |
+
+__Exceptions__: There is an exception for widgets that have the same effect than another more common widget. For example, `ImageButton` has the same effect that a `Button` so it's prefix is `bt_`. Also, for `<item/>` in `<menu/>`, the prefix is `action_`.
+
+#### 2.3.2.2 Strings, colors and dimens
+
+String names start with a prefix that identifies the section they belong to and should not contain abbreviations. For example `registration_email_hint` or `registration_name_hint`. If a string __doesn't belong__ to any section, then you should follow the rules below:
+
+| Prefix               | Description                           |
+| ---------------------| --------------------------------------|
+| `error_`             | An error message                      |
+| `message_`           | A regular information message         |
+| `title_`             | A title, i.e. a dialog title          |
+| none                 | An action such as "Save" or "Create"  |
+
+Moreover, sections need to be separate by a newline (example below).
+
+For colors and dimens, it is best to have a general element used in multiple elements rather than redefining each time the element.
+
+This is good :
+
+```xml
+<color name="primary_button_text">#ffffff</color>
+
+<color name="log_in_button_next_text">@color/primary_button_text</color>
+
+<color name="participant_button_remove_text">@color/primary_button_text</color>
+```
+
+This is __bad__:
+
+```xml
+<color name="log_in_button_next_text">#ffffff</color>
+
+<color name="participant_button_remove_text">#ffffff</color>
+```
+
+#### 2.3.2.3 Styles and Themes
+
+Unless the rest of resources, style names are written in __UpperCamelCase__.
+
+### 2.3.3 Attributes ordering
+
+As a general rule you should try to group similar attributes together. A good way of ordering the most common attributes is:
+
+1. xmlns tags
+2. View Id
+3. Layout width and layout height
+4. Style
+5. Other layout attributes, sorted alphabetically
+6. Remaining attributes, sorted alphabetically
+
+### 2.3.4 XML values
+
+For all values that can be put in a value file, it should be done. For example:
+
+`example.xml`
+```xml
+<Button android:id="@+id/bt_next"
+    android:layout_width="@dimen/log_in_button_next_width"
+    android:layout_height="@dimen/log_in_button_next_height"
+    android:text="@string/next"
+    android:textColor="@color/log_in_button_next_text"
+    android:textSize="@dimen/log_in_button_next_text" />
+```
+
+`colors.xml`
+```xml
+<color name="log_in_button_next_text">#ffffff</color>
+```
+
+`dimens.xml`
+```xml
+<dimen name="log_in_button_next_width">100dp</dimen>
+<dimen name="log_in_button_next_height">42dp</dimen>
+<dimen name="log_in_button_next_text">24sp</dimen>
+```
+
+`strings.xml`
+```xml
+<string name="next">Next</string>
+```
+
+### 2.4 Unit tests guidelines
+
+Test classes should match the name of the class the tests are targeting, followed by `Test`. For example, if we create a test class that contains tests for the `DatabaseHelper`, we should name it `DatabaseHelperTest`.
+
+Test methods are annotated with `@Test` and should generally start with the name of the method that is being tested, followed by a precondition and/or expected behaviour.
+
+* Template: `@Test void methodNamePreconditionExpectedBehaviour()`
+* Example: `@Test void signInWithEmptyEmailFails()`
+
+Precondition and/or expected behaviour may not always be required if the test is clear enough without them.
+
+Sometimes a class may contain a large amount of methods, that at the same time require several tests for each method. In this case, it's recommendable to split up the test class into multiple ones. For example, if the `DataManager` contains a lot of methods we may want to divide it into `DataManagerSignInTest`, `DataManagerLoadUsersTest`, etc. Generally you will be able to see what tests belong together because they have common [test fixtures](https://en.wikipedia.org/wiki/Test_fixture).
