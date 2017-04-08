@@ -448,7 +448,7 @@ For widgets variable, a good practice is to name the variable with the abbreviat
 | `ListView`        | `lv`              | `lvParticipants`  |
 | `LinearLayout`    | `ll`              | `llBottomButtons` |
 
-__Exception__: There is an exception for widgets that have the same effect than another more common widget. For example, `ImageButton` has the same effect that a `Button` so it's prefix is `bt`.
+__Exception__: There is an exception for widgets that have the same effect that another more common widget. For example, `ImageButton` has the same effect that a `Button` so it's prefix is `bt`.
 
 ## 2.3 XML guidelines
 
@@ -492,7 +492,7 @@ IDs should be prefixed with an abbreviation of the element. For example:
 | `ListView`         | `lv_`             |
 | `LinearLayout`     | `ll_`             |
 
-__Exceptions__: There is an exception for widgets that have the same effect than another more common widget. For example, `ImageButton` has the same effect that a `Button` so it's prefix is `bt_`. Also, for `<item/>` in `<menu/>`, the prefix is `action_`.
+__Exceptions__: There is an exception for widgets that have the same effect that another more common widget. For example, `ImageButton` has the same effect that a `Button` so it's prefix is `bt_`. Also, for `<item/>` in `<menu/>`, the prefix is `action_`.
 
 #### 2.3.2.2 Strings, colors and dimens
 
@@ -592,7 +592,7 @@ For every layout, if applicable, you should add `tools` attributes for a better 
 </LinearLayout>
 ```
 
-__IMPORTANT__: `tools` attibutes values should __not be created__ on values files __if only__ for `tools` attributes. 
+__IMPORTANT__: `tools` attibutes values should __not be created__ in values files __if only__ for `tools` attributes. 
 
 ## 2.4 Unit tests guidelines
 
