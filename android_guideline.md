@@ -438,7 +438,7 @@ loadPicture(context,
 
 ### 2.2.6 Widgets variables naming
 
-For widgets variable, a good practice is to name the variable with the abbreviation of the widget. Examples:
+For widgets variable, if the widget is only used one time and is uncommon (like `Toolbar`), name the variable like the widget (do not forget to respect 2.1 Java Rules). Else, a good practice is to name the variable with the abbreviation of the widget. Examples:
 
 | Widget            | Prefix            | Example           |
 |-------------------|-------------------|-------------------|
@@ -482,7 +482,7 @@ Resource IDs and names are written in lower __snake_case__.
 
 #### 2.3.2.1 ID naming
 
-IDs should be prefixed with an abbreviation of the element. For example:
+For IDs, if the widget is only used one time and is uncommon (like `Toolbar`), name the ID like the widget. Else, IDs should be prefixed with an abbreviation of the element. For example:
 
 | Element            | Prefix            |
 | -----------------  | ----------------- |
