@@ -149,6 +149,31 @@ public class Foo {
 
 Every class and nontrivial public method you write must contain a Javadoc comment with at least one sentence describing what the class or method does. This sentence should start with a third person descriptive verb.
 
+Examples:
+
+```java
+/** Returns the correctly rounded positive square root of a double value. */
+static double sqrt(double a) {
+    ...
+}
+```
+
+or
+
+```java
+/**
+ * Constructs a new String by converting the specified array of
+ * bytes using the platform's default character encoding.
+ */
+public String(byte[] bytes) {
+    ...
+}
+```
+
+You do not need to write Javadoc for trivial get and set methods such as `setFoo()` if all your Javadoc would say is "sets Foo". If the method does something more complex (such as enforcing a constraint or has an important side effect), then you must document it. If it's not obvious what the property "Foo" means, you should document it.
+
+Every method you write, public or otherwise, would benefit from Javadoc. Public methods are part of an API and therefore require Javadoc. Android does not currently enforce a specific style for writing Javadoc comments, but you should follow the instructions [How to Write Doc Comments for the Javadoc Tool](http://www.oracle.com/technetwork/java/javase/documentation/index-137868.html).
+
 ### 2.1.6 Write Short Methods
 
 When feasible, keep methods small and focused. We recognize that long methods are sometimes appropriate, so no hard limit is placed on method length.
@@ -298,9 +323,12 @@ There is no single correct solution for this but using a logical and consistent 
 2. Fields
 3. Constructors
 4. Override methods and callbacks (public or private)
-5. Public methods
-6. Private methods
-7. Inner classes or interfaces
+5. Static methods
+6. Public methods
+7. Private methods
+8. Inner classes or interfaces
+
+__IMPORTANT:__ Variables like `OnClickListener` are considered like methods.
 
 If your class is extending an __Android component__ such as an Activity or a Fragment, it is a good practice to order the override methods so that they __match the component's lifecycle__. For example, if you have an Activity that implements `onCreate()`, `onDestroy()`, `onPause()` and `onResume()`, then the correct order is:
 
@@ -369,7 +397,7 @@ public static Intent getStartIntent(Context context, User user) {
 For fragments, a variable `public static final String TAG` should be created and also the creation of a `newInstance()` method:
 
 ```java
-public static final String TAG = UserFragment.class.getSimpleName();
+public static final String TAG = "UserFragment";
 
 public static UserFragment newInstance(User user) {
 	UserFragment fragment = new UserFragment();
@@ -380,7 +408,7 @@ public static UserFragment newInstance(User user) {
 }
 ```
 
-__IMPORTANT__: These methods should go at the top of the class before `onCreate()`. 
+__IMPORTANT:__ These methods should go at the top of the class before `onCreate()`. 
 
 ### 2.2.5 Line-wrapping strategies
 
@@ -395,6 +423,8 @@ When the line is broken at an operator, the break comes __before__ the operator.
 ```java
 int longName = anotherVeryLongVariable + anEvenLongerOne - thisRidiculousLongOne
         + theFinalOne;
+boolean boolVar = firstCondition || secondCondition
+	&& third condition;
 ```
 
 __Assignment Operator Exception__
@@ -411,12 +441,12 @@ __Method chain case__
 When multiple methods are chained in the same line - for example when using Builders - every call to a method should go in its own line, breaking the line before the `.`
 
 ```java
-Picasso.with(context).load("http://ribot.co.uk/images/sexyjoe.jpg").into(imageView);
+Picasso.with(context).load("http://google.co.uk/images/image.jpg").into(imageView);
 ```
 
 ```java
 Picasso.with(context)
-        .load("http://ribot.co.uk/images/sexyjoe.jpg")
+        .load("http://google.co.uk/images/image.jpg")
         .into(imageView);
 ```
 
@@ -425,12 +455,12 @@ __Long parameters case__
 When a method has many parameters or its parameters are very long, we should break the line after every comma `,`
 
 ```java
-loadPicture(context, "http://ribot.co.uk/images/sexyjoe.jpg", mImageViewProfilePicture, clickListener, "Title of the picture");
+loadPicture(context, "http://google.co.uk/images/image.jpg", mImageViewProfilePicture, clickListener, "Title of the picture");
 ```
 
 ```java
 loadPicture(context,
-        "http://ribot.co.uk/images/sexyjoe.jpg",
+        "http://google.co.uk/images/image.jpg",
         mImageViewProfilePicture,
         clickListener,
         "Title of the picture");
@@ -448,7 +478,7 @@ For widgets variable, if the widget is only used one time and is uncommon (like 
 | `ListView`        | `lv`              | `lvParticipants`  |
 | `LinearLayout`    | `ll`              | `llBottomButtons` |
 
-__Exception__: There is an exception for widgets that have the same effect that another more common widget. For example, `ImageButton` has the same effect that a `Button` so it's prefix is `bt`.
+__Exception:__ There is an exception for widgets that have the same effect that another more common widget. For example, `ImageButton` has the same effect that a `Button` so it's prefix is `bt`.
 
 ## 2.3 XML guidelines
 
@@ -492,7 +522,7 @@ For IDs, if the widget is only used one time and is uncommon (like `Toolbar`), n
 | `ListView`         | `lv_`             |
 | `LinearLayout`     | `ll_`             |
 
-__Exceptions__: There is an exception for widgets that have the same effect that another more common widget. For example, `ImageButton` has the same effect that a `Button` so it's prefix is `bt_`. Also, for `<item/>` in `<menu/>`, the prefix is `action_`.
+__Exceptions:__ There is an exception for widgets that have the same effect that another more common widget. For example, `ImageButton` has the same effect that a `Button` so it's prefix is `bt_`. Also, for `<item/>` in `<menu/>`, the prefix is `action_`.
 
 #### 2.3.2.2 Strings, colors and dimens
 
@@ -538,9 +568,9 @@ As a general rule you should try to group similar attributes together. A good wa
 1. xmlns attributes
 2. View Id
 3. Layout width and layout height
-4. Style
-5. Other layout attributes, sorted alphabetically
-6. Remaining attributes, sorted alphabetically
+4. Other layout attributes, sorted alphabetically
+5. Remaining attributes, sorted alphabetically (except style)
+6. Style
 
 ### 2.3.4 XML values
 
@@ -592,7 +622,7 @@ For every layout, if applicable, you should add `tools` attributes for a better 
 </LinearLayout>
 ```
 
-__IMPORTANT__: `tools` attibutes values should __not be created__ in values files __if only__ for `tools` attributes. 
+__IMPORTANT:__ `tools` attributes values should __not be created__ in values files __if only__ for `tools` attributes. 
 
 ## 2.4 Unit tests guidelines
 
