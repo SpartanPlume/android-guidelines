@@ -624,6 +624,12 @@ For every layout, if applicable, you should add `tools` attributes for a better 
 
 __IMPORTANT:__ `tools` attributes values should __not be created__ in values files __if only__ for `tools` attributes. 
 
+### 2.3.6 `style`
+
+Do not forget that you can modify the main style of your activity.
+
+Create other styles only if necessary.
+
 ## 2.4 Unit tests guidelines
 
 Test classes should match the name of the class the tests are targeting, followed by `Test`. For example, if we create a test class that contains tests for the `DatabaseHelper`, we should name it `DatabaseHelperTest`.
